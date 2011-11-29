@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
 from socket import *
 from colorama import Fore, Style, init
 # init() # required in Windows
@@ -75,7 +78,7 @@ class YaH3C:
                                 get_EAP(EAP_RESPONSE,
                                     id,
                                     reqtype,
-                                    '\x15\x04\x00\x00\x00\x00' + login_info['user'])))
+                                    "\x06\x07bjQ7SE8BZ3MqHhs3clMregcDY3Y=\x20\x20"+login_info['user'])))
                     display_prompt(Fore.GREEN, 'Sending EAP response with identity = [%s]' % login_info['user'])
                 elif reqtype == EAP_TYPE_ALLOCATED:
                     display_prompt(Fore.YELLOW, 'Got EAP Request for Allocation')
