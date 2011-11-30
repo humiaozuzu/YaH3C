@@ -1,11 +1,46 @@
-PyH3C
+YaH3C
 =====
 
+YaH3C is a H3c authentication client for SYSU east campus.
 
-安装与使用
----------
-下载文件后，直接运行src文件夹下的yah3c.py即可
-然后帐号与密码在yah3c.py里面设置
-因为多用户管理和命令行解析和插件都还在实现中，所以先凑合着测试下这个版本把。。。
-更多的信息见 http://wiki.lovemaple.info/doku.php?id=networking:h3c
-感谢houqp的版本，很多地方都参考了他的代码 https://github.com/houqp/pyh3c
+Dependencies
+------------
+
+* Linux Platform
+* Python2 (Python3 is not supported)
+
+Installation
+------------
+
+use the following bash scripts to install:
+
+```bash
+git clone git://github.com/humiaozuzu/YaH3C.git
+cd YaH3C
+sudo python setup.py install
+```
+
+For **Arch** users, be sure to use **python2**
+
+Usage
+-----
+You must run the program with root privilege:
+```bash
+$ sudo yah3c
+```
+
+ScreenShots
+----------
+
+
+Todo
+----
+* Windows platform support
+* Command line argument support
+* Multiuser management
+* Web UI
+
+Thanks
+------
+* [qiao](https://github.com/qiao) - Write python installation script for YaH3C
+* [houqp](https://github.com/houqp) - Refered to houqp's [pyh3c](https://github.com/houqp/pyh3c).
