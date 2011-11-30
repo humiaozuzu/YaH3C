@@ -2,5 +2,4 @@
 
 if __name__ == '__main__':
     import yah3c.yah3c
-    client = yah3c.yah3c.YaH3C()
-    client.serve_forever()
+    yah3c.yah3c.main()

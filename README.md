@@ -11,17 +11,20 @@ Dependencies
 
 Installation
 ------------
+You should have **git** installed first, if not:
 
-use the following bash scripts to install:
+```bash
+# Ubuntui/Debian users
+sudo apt-get install git
+
+# ArchLinux users
+sudo pacman -S git
+```
+
+Then use the following bash scripts to install:
 
 ```bash
 git clone git://github.com/humiaozuzu/YaH3C.git
-```
-
-edit file src/yah3c.py
-input your username and password at the beginning of the file
-
-```bash
 cd YaH3C
 sudo python setup.py install
 ```
@@ -32,8 +35,14 @@ Usage
 -----
 
 You must run the program with root privilege:
+
 ```bash
 $ sudo yah3c
+```
+Use dhcpcd/dhclients or other network management tools(NetworkManager/wicd) to obtain IP address
+
+```bash
+$ sudo dhcped eth0
 ```
 
 ScreenShots
@@ -51,6 +60,7 @@ Authenticate failed:
 Todo
 ----
 * Windows platform support
+* daemonize
 * Command line argument support
 * Multiuser management
 * Web UI
