@@ -16,6 +16,12 @@ use the following bash scripts to install:
 
 ```bash
 git clone git://github.com/humiaozuzu/YaH3C.git
+```
+
+edit file src/yah3c.py
+input your username and password at the beginning of the file
+
+```bash
 cd YaH3C
 sudo python setup.py install
 ```
