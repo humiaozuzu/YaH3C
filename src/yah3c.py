@@ -102,7 +102,7 @@ class YaH3C:
             self.send_start()
             while 1:
                 eap_packet = self.client.recv(1600)
-                display_packet(eap_packet)
+                #display_packet(eap_packet)
                 # strip the ethernet_header and handle
                 self.EAP_handler(eap_packet[14:])
         except KeyboardInterrupt:
