@@ -32,6 +32,12 @@ $ sudo yah3c
 ScreenShots
 ----------
 
+Authenticate successfully:
+![success](https://github.com/humiaozuzu/YaH3C/blob/master/screenshots/success.png?raw=true)
+
+Authenticate failed:
+![failure](https://github.com/humiaozuzu/YaH3C/raw/master/screenshots/failure.png)
+
 
 Todo
 ----
