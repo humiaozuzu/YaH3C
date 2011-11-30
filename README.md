@@ -42,7 +42,8 @@ $ sudo yah3c
 Use dhcpcd/dhclients or other network management tools(NetworkManager/wicd) to obtain IP address
 
 ```bash
-$ sudo dhcped eth0
+# dhcpcd as an example 
+$ sudo dhcpcd eth0
 ```
 All users logging info are stored in **~/.yah3c**, you can modify it if you
 want to change your account info
