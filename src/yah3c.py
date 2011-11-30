@@ -79,7 +79,7 @@ class YaH3C:
                                     id,
                                     reqtype,
                                     "\x06\x07bjQ7SE8BZ3MqHhs3clMregcDY3Y=\x20\x20"+login_info['user'])))
-                    display_prompt(Fore.GREEN, 'Sending EAP response with identity = [%s]' % login_info['user'])
+                    #display_prompt(Fore.GREEN, 'Sending EAP response with identity = [%s]' % login_info['user'])
                 elif reqtype == EAP_TYPE_ALLOCATED:
                     display_prompt(Fore.YELLOW, 'Got EAP Request for Allocation')
                     resp=chr(len(login_info['password']))+login_info['password']+login_info['user']
