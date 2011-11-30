@@ -44,6 +44,8 @@ Use dhcpcd/dhclients or other network management tools(NetworkManager/wicd) to o
 ```bash
 $ sudo dhcped eth0
 ```
+All users logging info are stored in **~/.yah3c**, you can modify it if you
+want to change your account info
 
 ScreenShots
 ----------
