@@ -70,7 +70,10 @@ class YaH3C:
                 daemonize('/dev/null','/tmp/daemon.log','/tmp/daemon.log')
             elif code == EAP_FAILURE:
                 display_prompt(Fore.YELLOW, 'Got EAP Failure')
-                print eap_packet[10:].decode('gbk')
+                try:
+                    print eap_packet[10:].decode('gbk')
+                except UnicodeDecodeError:
+                    print eap_packet[10:]
             elif code == EAP_RESPONSE:
                 display_prompt(Fore.YELLOW, 'Got Unknown EAP Response')
             elif code == EAP_REQUEST:
@@ -95,7 +98,10 @@ class YaH3C:
                 else:
                     display_prompt(Fore.YELLOW, 'Got unknown Request type (%i)' % reqtype)
             elif code==10 and id==5:
-                print eap_packet[12:].decode('gbk')
+                try:
+                    print eap_packet[12:].decode('gbk')
+                except UnicodeDecodeError:
+                    print eap_packet[12:]
             else:
                 display_prompt(Fore.YELLOW, 'Got unknown EAP code (%i)' % code)
         else:
