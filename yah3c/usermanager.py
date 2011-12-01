@@ -4,7 +4,7 @@ import os
 
 class UserManager:
     def __init__(self):
-        self.homedir = '/home/' + os.getenv('SUDO_USER')
+        self.homedir = os.path.expanduser('~'+os.getenv('SUDO_USER'))
         self.cf = ConfigParser.ConfigParser()
         self.cf.read(self.homedir + '/.yah3c')
        
