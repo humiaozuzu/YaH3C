@@ -1,7 +1,7 @@
 from struct import *
 
-### Constants
-## Reference: http://tools.ietf.org/html/rfc3748
+## Constants
+# Reference: http://tools.ietf.org/html/rfc3748
 ETHERTYPE_PAE = 0x888e
 PAE_GROUP_ADDR = "\x01\x80\xc2\x00\x00\x03"
 
@@ -44,5 +44,3 @@ def get_EAP(code, id, type=0, data=""):
 
 def get_ethernet_header(src, dst, type):
     return dst+src+pack("!H",type)
-
-### packet praser

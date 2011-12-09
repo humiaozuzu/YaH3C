@@ -1,11 +1,20 @@
+""" User Management Module
+
+This module reads the 'users.conf' file and gets all users's logging info.
+"""
+
+__all__ = ["UserManager"]
+
 import ConfigParser
 import os
 
+#user_info_index = ['account', 'password', 'device']
+
 class UserManager:
     def __init__(self):
-        self.homedir = os.path.expanduser('~'+os.getenv('SUDO_USER'))
+        self.users_logging_file_dir = os.path.expanduser('~'+os.getenv('SUDO_USER') + '/.yah3c/users.conf')
         self.cf = ConfigParser.ConfigParser()
-        self.cf.read(self.homedir + '/.yah3c/users.conf')
+        self.cf.read(self.users_logging_file_dir)
        
     def get_user_number(self):
         return len(self.cf.sections())
@@ -24,7 +33,7 @@ class UserManager:
     def update_user_info(self, user_info):
         self.cf.set(user_info[0], 'password', user_info[1])
         self.cf.set(user_info[0], 'dev', user_info[2])
-        fp = open(self.homedir+'/.yah3c/users.conf', 'w')
+        fp = open(self.users_logging_file_dir, 'w')
         self.cf.write(fp)
         fp.close()
 

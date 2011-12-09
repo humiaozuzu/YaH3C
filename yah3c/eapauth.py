@@ -1,15 +1,18 @@
+""" EAP authentication handler
+
+This module sents EAPOL begin/logoff packet
+and parses received EAP packet 
+
+"""
+
+__all__ = ["EAPAuth"]
+
 from socket import *
 import os, sys, pwd
 
 from colorama import Fore, Style, init
 # init() # required in Windows
 from eappacket import *
-
-login_info = {
-        "user": "your id",
-        "password": "your password",
-        "device": "eth0"
-        }
 
 def display_prompt(color, string):
     prompt = color + Style.BRIGHT + '==> ' + Style.RESET_ALL
@@ -24,14 +27,16 @@ def display_packet(packet):
     print '\tType: ' + repr(packet[12:14])
 
 class EAPAuth:
-    def __init__(self):
+    def __init__(self, login_info):
         # bind the h3c client to the EAP protocal 
         self.client = socket(AF_PACKET, SOCK_RAW, htons(ETHERTYPE_PAE))
-        self.client.bind((login_info["device"], ETHERTYPE_PAE))
+        self.client.bind((login_info[2], ETHERTYPE_PAE))
+        # get local ethernet card address
         self.mac_addr = self.client.getsockname()[4]
         self.ethernet_header = get_ethernet_header(self.mac_addr, PAE_GROUP_ADDR, ETHERTYPE_PAE)
         self.loaded_plugins = []
         self.loading_plugin_names = ['notify']
+        self.login_info = login_info
 
     def load_plugins(self):
         homedir = os.path.expanduser('~'+os.getenv('SUDO_USER')) 
@@ -79,10 +84,10 @@ class EAPAuth:
                     get_EAP(EAP_RESPONSE,
                         packet_id,
                         EAP_TYPE_ID,
-                        "\x06\x07bjQ7SE8BZ3MqHhs3clMregcDY3Y=\x20\x20"+login_info['user'])))
+                        "\x06\x07bjQ7SE8BZ3MqHhs3clMregcDY3Y=\x20\x20"+ self.login_info[0])))
 
     def send_response_h3c(self, packet_id):
-        resp=chr(len(login_info['password']))+login_info['password']+login_info['user']
+        resp=chr(len(self.login_info[1]))+self.login_info[1]+self.login_info[0]
         eap_packet = self.ethernet_header + get_EAPOL(EAPOL_EAPPACKET, get_EAP(EAP_RESPONSE, packet_id, EAP_TYPE_H3C, resp))
         try:
             self.client.send(eap_packet)
@@ -125,7 +130,7 @@ class EAPAuth:
                 if reqtype == EAP_TYPE_ID:
                     display_prompt(Fore.YELLOW, 'Got EAP Request for identity')
                     self.send_response_id(id)
-                    display_prompt(Fore.GREEN, 'Sending EAP response with identity = [%s]' % login_info['user'])
+                    display_prompt(Fore.GREEN, 'Sending EAP response with identity = [%s]' % self.login_info[0])
                 elif reqtype == EAP_TYPE_H3C:
                     display_prompt(Fore.YELLOW, 'Got EAP Request for Allocation')
                     self.send_response_h3c(id)
@@ -141,6 +146,7 @@ class EAPAuth:
 
     def serve_forever(self):
         try:
+            #print self.login_info
             self.load_plugins()
             self.send_start()
             while 1:
