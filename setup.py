@@ -12,6 +12,6 @@ setup(name='yah3c',
       url='https://github.com/humiaozuzu/YaH3C',
       download_url='https://github.com/humiaozuzu/YaH3C',
       license='GPL',
-      packages=['yah3c', 'yah3c/colorama', 'yah3c/plugins'],
+      packages=['yah3c', 'yah3c/colorama'],
       scripts=['scripts/yah3c'],
       )
