@@ -46,11 +46,34 @@ Use dhcpcd/dhclients or other network management tools(NetworkManager/wicd) to o
 # dhcpcd as an example 
 $ sudo dhcpcd eth0
 ```
-All users logging info are stored in **~/.yah3c**, you can modify it if you
-want to change your account info
+
+Resource files
+-------------
+
+All users logging info and plugins are stored in the folder **~/.yah3c/**
+
+    ~/yah3c/
+    ├── plugins            # plugins folder
+    │   ├── auto_dhcp.py
+    │   ├── __init__.py
+    │   ├── notify.py
+    │   ├── plugin_template.py
+    │   └── test.py
+    └── users.conf         # storing all users' logging info 
+
+A user's logging info is organized in the following format in **users.conf**:
+
+```
+    [account]          # your net ID
+    password = 123456  # password for your net ID
+    dev = eth0         # Ethernet card you use for authentication
+```
+
+You can refer to **~/.yah3c/plugins/plugin_template.py** to known how to write
+a plugin for YaH3C.
 
 ScreenShots
-----------
+-----------
 
 Authenticate successfully:
 
@@ -76,7 +99,6 @@ Todo
 ----
 * Windows platform support
 * Command line argument support
-* Multiuser management
 * Web UI
 
 Thanks

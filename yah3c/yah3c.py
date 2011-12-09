@@ -9,7 +9,7 @@ import getpass
 from eapauth import *
 import usermanager
 
-__version__ = '0.0.1'
+__version__ = '0.1'
 
 login_info = {
         "user": "your id",
