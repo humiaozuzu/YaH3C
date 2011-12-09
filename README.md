@@ -59,11 +59,17 @@ Authenticate failed:
 
 ![failure](https://github.com/humiaozuzu/YaH3C/raw/master/screenshots/failure.png)
 
+Updates
+-------
+Ver 0.2
+ * complete refactory 
+ * plugins support
+Ver 0.01
+ * Initial commit
 
 Todo
 ----
 * Windows platform support
-* daemonize
 * Command line argument support
 * Multiuser management
 * Web UI
