@@ -26,7 +26,8 @@ Then use the following bash scripts to install:
 ```bash
 git clone git://github.com/humiaozuzu/YaH3C.git
 cd YaH3C
-sudo python setup.py install
+make
+sudo make install
 ```
 
 For **Arch** users, be sure to use **python2**
