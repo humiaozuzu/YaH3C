@@ -62,9 +62,11 @@ Authenticate failed:
 
 Updates
 -------
+
 Ver 0.2
  * complete refactory 
  * plugins support
+
 Ver 0.01
  * Initial commit
 
