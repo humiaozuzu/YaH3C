@@ -61,6 +61,36 @@ All users logging info and plugins are stored in the folder **~/.yah3c/**
     │   └── test.py
     └── users.conf         # storing all users' logging info 
 
+You can refer to **~/.yah3c/plugins/plugin_template.py** to known how to write
+a plugin for YaH3C.
+
+
+### notify ###
+
+This plugin will use `python-notify` to indicate the user when he is
+online/offline.
+
+You may meet with following error message when logging in, and the notify won't
+show up:
+
+```bash
+No protocol specified\nAutolaunch error: X11 initialization failed.\n
+```
+
+There are both ways to solve the problem:
+
+ 1. excute `xhost +local:root` or add it to your `.bash_profile` once and for
+ all.
+ 2. Add the following line to `sudoers` file(using `visudo`): 
+
+ ```bash
+Defaults env_keep += "HOME"
+```
+
+### auto_dhcp ###
+This plugin will use dhcpcd to allocate for ip adress  after you have
+successfully logged in.
+
 A user's logging info is organized in the following format in **users.conf**:
 
 ```
@@ -68,9 +98,6 @@ A user's logging info is organized in the following format in **users.conf**:
     password = 123456  # password for your net ID
     dev = eth0         # Ethernet card you use for authentication
 ```
-
-You can refer to **~/.yah3c/plugins/plugin_template.py** to known how to write
-a plugin for YaH3C.
 
 ScreenShots
 -----------

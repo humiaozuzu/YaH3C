@@ -36,6 +36,7 @@ class EAPAuth:
         self.ethernet_header = get_ethernet_header(self.mac_addr, PAE_GROUP_ADDR, ETHERTYPE_PAE)
         self.loaded_plugins = []
         self.loading_plugin_names = ['notify']
+        self.has_sent_logoff = False
         self.login_info = login_info
 
     def load_plugins(self):
@@ -74,6 +75,7 @@ class EAPAuth:
         # sent eapol logoff packet
         eap_logoff_packet = self.ethernet_header + get_EAPOL(EAPOL_LOGOFF)
         self.client.send(eap_logoff_packet)
+        self.has_sent_logoff = True
 
         display_prompt(Fore.GREEN, 'Sending EAPOL logoff')
 
@@ -117,10 +119,16 @@ class EAPAuth:
                 self.invoke_plugins('after_auth_succ')
                 daemonize('/dev/null','/tmp/daemon.log','/tmp/daemon.log')
             elif code == EAP_FAILURE:
-                display_prompt(Fore.YELLOW, 'Got EAP Failure')
-                # invoke plugins 
-                self.invoke_plugins('after_auth_fail')
-                self.display_login_message(eap_packet[10:])
+                if (self.has_sent_logoff):
+                    display_prompt(Fore.YELLOW, 'Logoff Successfully!')
+                    # invoke plugins 
+                    self.invoke_plugins('after_logoff')
+                    self.display_login_message(eap_packet[10:])
+                else:
+                    display_prompt(Fore.YELLOW, 'Got EAP Failure')
+                    # invoke plugins 
+                    self.invoke_plugins('after_auth_fail')
+                    self.display_login_message(eap_packet[10:])
                 exit(-1)
             elif code == EAP_RESPONSE:
                 display_prompt(Fore.YELLOW, 'Got Unknown EAP Response')
@@ -152,7 +160,7 @@ class EAPAuth:
             while 1:
                 try:
                     eap_packet = self.client.recv(1600)
-                except socket.error, msg:
+                except error , msg:
                     print "Connection error!"
                     exit(-1)
                 # strip the ethernet_header and handle
