@@ -61,6 +61,14 @@ All users logging info and plugins are stored in the folder **~/.yah3c/**
     │   └── test.py
     └── users.conf         # storing all users' logging info 
 
+A user's logging info is organized in the following format in **users.conf**:
+
+```
+    [account]          # your net ID
+    password = 123456  # password for your net ID
+    dev = eth0         # Ethernet card you use for authentication
+```
+
 You can refer to **~/.yah3c/plugins/plugin_template.py** to known how to write
 a plugin for YaH3C.
 
@@ -88,16 +96,9 @@ Defaults env_keep += "HOME"
 ```
 
 ### auto_dhcp ###
-This plugin will use dhcpcd to allocate for ip adress  after you have
+This plugin will use `dhcpcd` to allocate for ip adress  after you have
 successfully logged in.
 
-A user's logging info is organized in the following format in **users.conf**:
-
-```
-    [account]          # your net ID
-    password = 123456  # password for your net ID
-    dev = eth0         # Ethernet card you use for authentication
-```
 
 ScreenShots
 -----------
