@@ -64,16 +64,16 @@ All users logging info and plugins are stored in the folder **~/.yah3c/**
 A user's logging info is organized in the following format in **users.conf**:
 
 ```
-    [account]          # your net ID
-    password = 123456  # password for your net ID
-    dev = eth0         # Ethernet card you use for authentication
+[account]          # your net ID
+password = 123456  # password for your net ID
+dev = eth0         # Ethernet card you use for authentication
 ```
 
 You can refer to **~/.yah3c/plugins/plugin_template.py** to known how to write
 a plugin for YaH3C.
 
 
-### notify ###
+### plugins::notify ###
 
 This plugin will use `python-notify` to indicate the user when he is
 online/offline.
@@ -95,10 +95,9 @@ There are both ways to solve the problem:
 Defaults env_keep += "HOME"
 ```
 
-### auto_dhcp ###
+### plugins::auto_dhcp ###
 This plugin will use `dhcpcd` to allocate for ip adress  after you have
 successfully logged in.
-
 
 ScreenShots
 -----------

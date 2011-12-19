@@ -4,6 +4,7 @@ from struct import *
 # Reference: http://tools.ietf.org/html/rfc3748
 ETHERTYPE_PAE = 0x888e
 PAE_GROUP_ADDR = "\x01\x80\xc2\x00\x00\x03"
+BROADCAST_ADDR = "\xff\xff\xff\xff\xff\xff"
 
 EAPOL_VERSION = 1
 EAPOL_EAPPACKET = 0

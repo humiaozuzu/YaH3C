@@ -2,6 +2,8 @@ import commands
 import sys
 from time import sleep
 
+root_privilege = True
+
 dhcp_client = 'dhcpcd'
 dhcp_args = ''
 

@@ -41,10 +41,11 @@ class EAPAuth:
 
     def load_plugins(self):
         homedir = os.path.expanduser('~'+os.getenv('SUDO_USER')) 
-        sys.path.insert(0, homedir + '/.yah3c')
-        for loading_plugin_name in self.loading_plugin_names:
-            loaded_plugin = __import__('plugins.' + loading_plugin_name)
-            self.loaded_plugins.append(getattr(loaded_plugin, loading_plugin_name))
+        sys.path.insert(0, homedir + '/.yah3c/plugins')
+        self.load_plugins = map(__import__, self.loading_plugin_names)
+        #for loading_plugin_name in self.loading_plugin_names:
+            #loaded_plugin = __import__('plugins.' + loading_plugin_name)
+            #self.loaded_plugins.append(getattr(loaded_plugin, loading_plugin_name))
 
     def invoke_plugins(self, func_name):
         for plugin in self.loaded_plugins:
