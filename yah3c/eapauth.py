@@ -35,7 +35,7 @@ class EAPAuth:
         self.mac_addr = self.client.getsockname()[4]
         self.ethernet_header = get_ethernet_header(self.mac_addr, PAE_GROUP_ADDR, ETHERTYPE_PAE)
         self.loaded_plugins = []
-        self.loading_plugin_names = ['notify']
+        self.loading_plugin_names = []
         self.has_sent_logoff = False
         self.login_info = login_info
 
