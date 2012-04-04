@@ -1,27 +1,27 @@
 YaH3C
 =====
 
-YaH3C is a H3c authentication client for SYSU east campus.
+YaH3C 是用于校园网认证的客户端，支持中山大学东校区.
 
-Dependencies
+依赖
 ------------
 
-* Linux Platform
-* Python2 (Python3 is not supported)
+* Linux
+* Python2 (Python3暂不支持)
 
-Installation
+安装
 ------------
-You should have **git** installed first, if not:
+
+首先从github上下载，可以直接利用`git clone`，也可以下载压缩包自己解压然后安装。下面以git为例，如果没有则需要先安装：
 
 ```bash
-# Ubuntui/Debian users
+# Ubuntu/Debian
 sudo apt-get install git
 
-# ArchLinux users
+# ArchLinux
 sudo pacman -S git
 ```
-
-Then use the following bash scripts to install:
+然后从项目中clone下来并安装
 
 ```bash
 git clone git://github.com/humiaozuzu/YaH3C.git
@@ -30,83 +30,94 @@ make
 sudo make install
 ```
 
-For **Arch** users, be sure to use **python2**
+**ArchLinux**默认安装的python是python3，你需要手动安装python2。
 
-Usage
------
+使用
+----
 
-You must run the program with root privilege:
+### 认证
 
-```bash
-$ sudo yah3c
-```
-Use dhcpcd/dhclients or other network management tools(NetworkManager/wicd) to obtain IP address
+程序运行时必须要有root权限：
 
 ```bash
-# dhcpcd as an example 
-$ sudo dhcpcd eth0
+sudo yah3c
 ```
 
-Resource files
--------------
+然后根据程序的提示输入账号密码就可以开始认证了。
 
-All users logging info and plugins are stored in the folder **~/.yah3c/**
+### 联网
+
+因为YaH3C仅仅是**认证**客户端，所以通过认证后你需要自己联网，一般学校都是使用的dhcp协议获取ip。
+
+你可以通过你自己喜欢的方式获取ip，命令行的或者是NetworkManager/Wicd：
+
+```bash
+# 以dhcpcd为例
+sudo dhcpcd eth0
+```
+
+配置文件
+--------
+
+所有用户的登陆信息和配置文件都放在`~/.yah3c/`目录下，可以自己根据需求进行修改。
 
     ~/yah3c/
-    ├── plugins            # plugins folder
+    ├── plugins            # 插件目录
     │   ├── auto_dhcp.py
     │   ├── __init__.py
     │   ├── notify.py
     │   ├── plugin_template.py
     │   └── test.py
-    └── users.conf         # storing all users' logging info 
+    └── users.conf         # 保存用户的登陆信息
 
-A user's logging info is organized in the following format in **users.conf**:
+用户的登陆信息按照如下的格式保存在文件`users.conf`中：
 
 ```
-[account]          # your net ID
-password = 123456  # password for your net ID
-dev = eth0         # Ethernet card you use for authentication
+[account]          # 你的帐户 
+password = 123456  # 密码
+dev = eth0         # 使用的网卡
 ```
 
-You can refer to **~/.yah3c/plugins/plugin_template.py** to known how to write
-a plugin for YaH3C.
+插件
+----
 
+目前插件机制还不是很完善，默认是关闭的。
 
 ### plugins::notify ###
 
-This plugin will use `python-notify` to indicate the user when he is
-online/offline.
+调用`python-notify`提示用户在线或掉线。
 
-You may meet with following error message when logging in, and the notify won't
-show up:
+KDE的用户可能回遇到下面错误或者notify不显示的情况：
 
 ```bash
 No protocol specified\nAutolaunch error: X11 initialization failed.\n
 ```
 
-There are both ways to solve the problem:
+有2种解决方案：
 
- 1. excute `xhost +local:root` or add it to your `.bash_profile` once and for
- all.
- 2. Add the following line to `sudoers` file(using `visudo`): 
+ 1. 在终端执行`xhost +local:root`，或讲其添加到`.bash_profile`一劳永逸解决问题。
+ 2. 执行`visudo`后添加下面的配置 
 
  ```bash
 Defaults env_keep += "HOME"
 ```
 
 ### plugins::auto_dhcp ###
-This plugin will use `dhcpcd` to allocate for ip adress  after you have
-successfully logged in.
+
+这个插件会在你登陆成功后使用dhcpcd帮你自动获取ip。
+
+### 为YaH3C贡献插件
+
+你可以参考``~/.yah3c/plugins/plugin_template.py``文件，了解如何为YaH3C编写插件，更详细的信息可以参考[wiki](https://github.com/humiaozuzu/YaH3C/wiki/4.-YaH3C插件机制)
 
 ScreenShots
 -----------
 
-Authenticate successfully:
+认证成功:
 
 ![success](https://github.com/humiaozuzu/YaH3C/blob/master/screenshots/success.png?raw=true)
 
-Authenticate failed:
+认证失败:
 
 ![failure](https://github.com/humiaozuzu/YaH3C/raw/master/screenshots/failure.png)
 
@@ -124,11 +135,12 @@ Ver 0.01
 
 Todo
 ----
-* Windows platform support
 * Command line argument support
 * Web UI
+* Tray icon
 
 Thanks
 ------
-* [qiao](https://github.com/qiao) - Write python installation script for YaH3C
+* [qiao](https://github.com/qiao) - Write python installation script for YaH3C.
 * [houqp](https://github.com/houqp) - Refered to houqp's [pyh3c](https://github.com/houqp/pyh3c).
+* [tigersoldier](https://github.com/tigersoldier) - Write EAP-Md5 for YaH3C.
