@@ -81,7 +81,7 @@ dev = eth0         # 使用的网卡
 插件
 ----
 
-目前插件机制还不是很完善，默认是关闭的。
+目前插件机制还不是很完善，默认是没有启用任何插件的。
 
 ### plugins::notify ###
 
@@ -123,6 +123,10 @@ ScreenShots
 
 Updates
 -------
+
+Ver 0.3
+
+* add eap-md5 support
 
 Ver 0.2
 
