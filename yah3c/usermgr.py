@@ -10,7 +10,7 @@ import os
 
 #user_info_index = ['account', 'password', 'device']
 
-class UserManager:
+class UserMgr:
     def __init__(self):
         self.users_logging_file_dir = os.path.expanduser('~'+os.getenv('SUDO_USER') + '/.yah3c/users.conf')
         self.cf = ConfigParser.ConfigParser()
@@ -19,7 +19,7 @@ class UserManager:
     def get_user_number(self):
         return len(self.cf.sections())
 
-    def get_users_info(self):
+    def get_all_users_info(self):
         users_info = []
         for account in self.cf.sections():
             dev = self.cf.get(account, 'dev')
@@ -37,7 +37,7 @@ class UserManager:
         self.cf.write(fp)
         fp.close()
 
-    def get_user_info(self, idx):
+    def get_user_login_info(self, idx):
         account = self.cf.sections()[idx]
         password = self.cf.get(account, 'password')
         dev = self.cf.get(account, 'dev')
