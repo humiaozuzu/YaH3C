@@ -1,0 +1,14 @@
+# YaH3C changelog
+
+## 0.3
+
+* add eap-md5 support
+
+## 0.2
+
+* complete refactory 
+* plugins support
+
+## 0.1
+
+* Initial commit
