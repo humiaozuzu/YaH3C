@@ -6,7 +6,7 @@ import yah3c.yah3c
 
 setup(name='yah3c',
       version=yah3c.yah3c.__version__,
-      description='A program for passing h3c authentication in SYSU east campus.',
+      description='A program for h3c authentication in SYSU east campus.',
       author='maple',
       author_email='maplevalley8@gmail.com',
       url='https://github.com/humiaozuzu/YaH3C',

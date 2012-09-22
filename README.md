@@ -1,11 +1,9 @@
 YaH3C
 =====
-
 YaH3C 是用于校园网认证的客户端，支持中山大学东校区.
 
 依赖
 ------------
-
 * Linux
 * Python2 (Python3暂不支持)
 
@@ -26,8 +24,7 @@ sudo pacman -S git
 ```bash
 git clone git://github.com/humiaozuzu/YaH3C.git
 cd YaH3C
-make
-sudo make install
+sudo python setup.py
 ```
 
 **ArchLinux**默认安装的python是python3，你需要手动安装python2。
@@ -51,64 +48,20 @@ sudo yah3c
 
 你可以通过你自己喜欢的方式获取ip，命令行的或者是NetworkManager/Wicd：
 
-```bash
+``` bash
 # 以dhcpcd为例
 sudo dhcpcd eth0
 ```
 
 配置文件
 --------
+用户的登陆信息按照如下的格式保存在文件`/etc/yah3c.conf`中：
 
-所有用户的登陆信息和配置文件都放在`~/.yah3c/`目录下，可以自己根据需求进行修改。
-
-    ~/yah3c/
-    ├── plugins            # 插件目录
-    │   ├── auto_dhcp.py
-    │   ├── __init__.py
-    │   ├── notify.py
-    │   ├── plugin_template.py
-    │   └── test.py
-    └── users.conf         # 保存用户的登陆信息
-
-用户的登陆信息按照如下的格式保存在文件`users.conf`中：
-
+``` ini
+[account]                  # 你的帐户 
+password = 123456          # 密码
+ethernet_interface = eth0  # 使用的网卡
 ```
-[account]          # 你的帐户 
-password = 123456  # 密码
-dev = eth0         # 使用的网卡
-```
-
-插件
-----
-
-目前插件机制还不是很完善，默认是没有启用任何插件的。
-
-### plugins::notify ###
-
-调用`python-notify`提示用户在线或掉线。
-
-KDE的用户可能回遇到下面错误或者notify不显示的情况：
-
-```bash
-No protocol specified\nAutolaunch error: X11 initialization failed.\n
-```
-
-有2种解决方案：
-
- 1. 在终端执行`xhost +local:root`，或讲其添加到`.bash_profile`一劳永逸解决问题。
- 2. 执行`visudo`后添加下面的配置 
-
- ```bash
-Defaults env_keep += "HOME"
-```
-
-### plugins::auto_dhcp ###
-
-这个插件会在你登陆成功后使用dhcpcd帮你自动获取ip。
-
-### 为YaH3C贡献插件
-
-你可以参考``~/.yah3c/plugins/plugin_template.py``文件，了解如何为YaH3C编写插件，更详细的信息可以参考[wiki](https://github.com/humiaozuzu/YaH3C/wiki/4.-YaH3C插件机制)
 
 ScreenShots
 -----------
@@ -121,27 +74,11 @@ ScreenShots
 
 ![failure](https://github.com/humiaozuzu/YaH3C/raw/master/screenshots/failure.png)
 
-Updates
--------
-
-Ver 0.3
-
-* add eap-md5 support
-
-Ver 0.2
-
-* complete refactory 
-* plugins support
-
-Ver 0.01
-
-* Initial commit
 
 Todo
 ----
 * Command line argument support
-* Web UI
-* Tray icon
+* BSD BPF support
 
 Thanks
 ------

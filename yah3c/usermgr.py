@@ -1,45 +1,62 @@
 """ User Management Module
 
-This module reads the 'users.conf' file and gets all users's logging info.
+This module reads the 'users.conf' file and gets all users's info.
 """
 
-__all__ = ["UserManager"]
+__all__ = ["UserMgr"]
 
 import ConfigParser
-import os
-
-#user_info_index = ['account', 'password', 'device']
 
 class UserMgr:
-    def __init__(self):
-        self.users_logging_file_dir = os.path.expanduser('~'+os.getenv('SUDO_USER') + '/.yah3c/users.conf')
-        self.cf = ConfigParser.ConfigParser()
-        self.cf.read(self.users_logging_file_dir)
+    """User Manager
+    The format of the user_info is:
+    user_info = {
+        "username": "maple",
+        "password": "valley",
+        "ethernet_interface": "eth0",
+        "carry_version_info": true,
+        "broadcast_logoff": false
+        "packet_type": "unicast"
+    }
+    """
+    def __init__(self, path=None):
+        if path is None:
+            self.users_cfg_path = '/etc/yah3c.conf'
+        else:
+            self.users_cfg_path = path
+        self.config = ConfigParser.ConfigParser()
+        self.config.read(self.users_cfg_path)
        
     def get_user_number(self):
-        return len(self.cf.sections())
+        return len(self.config.sections())
 
     def get_all_users_info(self):
         users_info = []
-        for account in self.cf.sections():
-            dev = self.cf.get(account, 'dev')
-            users_info.append((account, dev))
+        for username in self.config.sections():
+            user_info = dict(self.config.items(username))
+            user_info['username'] = username
+            users_info.append(user_info)
+
         return users_info
+
+    def get_user_info(self, username):
+        return dict(self.config.items(username))
     
-    def create_user(self, user_info):
-        self.cf.add_section(user_info[0])
+    def add_user(self, user_info):
+        self.config.add_section(user_info['username'])
         self.update_user_info(user_info)
 
-    def update_user_info(self, user_info):
-        self.cf.set(user_info[0], 'password', user_info[1])
-        self.cf.set(user_info[0], 'dev', user_info[2])
-        fp = open(self.users_logging_file_dir, 'w')
-        self.cf.write(fp)
+    def remove_user(self, username):
+        self.config.remove_section(username)
+        fp = open(self.users_cfg_path, 'w')
+        self.config.write(fp)
         fp.close()
 
-    def get_user_login_info(self, idx):
-        account = self.cf.sections()[idx]
-        password = self.cf.get(account, 'password')
-        dev = self.cf.get(account, 'dev')
-        return (account, password, dev)
-         
+    def update_user_info(self, user_info):
+        self.config.set(user_info['username'], 'password',
+                        user_info['password'])
+        self.config.set(user_info['username'], 'ethernet_interface',
+                        user_info['ethernet_interface'])
+        fp = open(self.users_cfg_path, 'w')
+        self.config.write(fp)
+        fp.close()
