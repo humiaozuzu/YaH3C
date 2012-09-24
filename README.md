@@ -24,7 +24,7 @@ sudo pacman -S git
 ```bash
 git clone git://github.com/humiaozuzu/YaH3C.git
 cd YaH3C
-sudo python setup.py
+sudo python setup.py install
 ```
 
 **ArchLinux**默认安装的python是python3，你需要手动安装python2。
