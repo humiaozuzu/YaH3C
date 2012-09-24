@@ -9,6 +9,7 @@ __all__ = ["EAPAuth"]
 
 import socket
 import os, sys, pwd
+from subprocess import call
 
 from colorama import Fore, Style, init
 # init() # required in Windows
@@ -105,8 +106,14 @@ class EAPAuth:
         code, id, eap_len = unpack("!BBH", eap_packet[4:8])
         if code == EAP_SUCCESS:
             display_prompt(Fore.YELLOW, 'Got EAP Success')
-            # invoke plugins 
-            daemonize('/dev/null','/tmp/daemon.log','/tmp/daemon.log')
+            
+            if self.login_info['dhcp_command']:
+                display_prompt(Fore.YELLOW, 'Obtaining IP Address:')
+                call([self.login_info['dhcp_command'], self.login_info['ethernet_interface']])
+
+            if self.login_info['daemon'] == 'True':
+                daemonize('/dev/null','/tmp/daemon.log','/tmp/daemon.log')
+        
         elif code == EAP_FAILURE:
             if (self.has_sent_logoff):
                 display_prompt(Fore.YELLOW, 'Logoff Successfully!')

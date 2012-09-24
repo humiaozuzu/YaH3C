@@ -14,8 +14,11 @@ class UserMgr:
         "username": "maple",
         "password": "valley",
         "ethernet_interface": "eth0",
-        "carry_version_info": true,
-        "broadcast_logoff": false
+        "dhcp_command": "dhcpcd",
+        "daemon": True,
+        # following has not implemented yet
+        "carry_version_info": True,
+        "broadcast_logoff": False
         "packet_type": "unicast"
     }
     """
@@ -25,6 +28,12 @@ class UserMgr:
         else:
             self.users_cfg_path = path
         self.config = ConfigParser.ConfigParser()
+        self.config.read(self.users_cfg_path)
+
+    def save_and_reload(self):
+        fp = open(self.users_cfg_path, 'w')
+        self.config.write(fp)
+        fp.close()
         self.config.read(self.users_cfg_path)
        
     def get_user_number(self):
@@ -40,7 +49,9 @@ class UserMgr:
         return users_info
 
     def get_user_info(self, username):
-        return dict(self.config.items(username))
+        user_info = dict(self.config.items(username))
+        user_info['username'] = username
+        return user_info
     
     def add_user(self, user_info):
         self.config.add_section(user_info['username'])
@@ -48,15 +59,15 @@ class UserMgr:
 
     def remove_user(self, username):
         self.config.remove_section(username)
-        fp = open(self.users_cfg_path, 'w')
-        self.config.write(fp)
-        fp.close()
+        self.save_and_reload()
 
     def update_user_info(self, user_info):
         self.config.set(user_info['username'], 'password',
                         user_info['password'])
         self.config.set(user_info['username'], 'ethernet_interface',
                         user_info['ethernet_interface'])
-        fp = open(self.users_cfg_path, 'w')
-        self.config.write(fp)
-        fp.close()
+        self.config.set(user_info['username'], 'dhcp_command',
+                        user_info['dhcp_command'])
+        self.config.set(user_info['username'], 'daemon',
+                        user_info['daemon'])
+        self.save_and_reload()

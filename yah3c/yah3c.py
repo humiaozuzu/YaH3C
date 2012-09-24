@@ -4,29 +4,34 @@
 
 """
 
-__version__ = '0.4'
+__version__ = '0.5'
 
 import os, sys
 import ConfigParser
 import getpass
-from socket import socket
+import argparse
+import logging
 
 import eapauth
 import usermgr
-import argparse
+
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description='Yet Another H3C.', prog='yah3c')
+    parser = argparse.ArgumentParser(description='Yet Another H3C Authentication Client', prog='yah3c')
     parser.add_argument('-u', '--username',
-            help='auth username')
-    parser.add_argument('-p', '--password',
-            help='auth password')
-    parser.add_argument('-i', '--interface', default='eth0',
-            help='Etherent interface used to send packet.eth0 by default.')
-    parser.add_argument('-d', '--daemon', action='store_true',
-            help='Go to background after authentication.')
+            help='Login in with this username')
+    # parser.add_argument('-p', '--password',
+    #         help='Password')
+    # parser.add_argument('-i', '--interface', default='eth0',
+    #         help='Etherent interface used. Set as eth0 by default.')
+    # parser.add_argument('-d', '--daemon', action='store_true',
+    #         help='Fork to background after authentication.')
+    # parser.add_argument('-D', '--dhcp',
+    #         help='DHCP cmd used to obtain ip after authentication.')
+    parser.add_argument('-debug', action='store_true',
+            help='Enable debugging mode')
     args = parser.parse_args()
-    print args
+    return args
 
 def prompt_user_info():
     username = raw_input('Input username: ')
@@ -37,13 +42,26 @@ def prompt_user_info():
             break
         else:
             print 'Password do not match!'
+
     dev = raw_input('Decice(eth0 by default): ')
     if not dev:
         dev = 'eth0'
+
+    choice = raw_input('Forked to background after authentication(Yes by default)\n<Y/N>: ')
+    if choice == 'n' or choice == 'N':
+        daemon = False
+    else:
+        daemon = True
+
+    dhcp_cmd = raw_input('Dhcp command(Press Enter to pass): ')
+    if not dhcp_cmd:
+        dhcp_cmd = ''
     return {
         'username': username,
         'password': password,
-        'ethernet_interface': dev
+        'ethernet_interface': dev,
+        'daemon': daemon,
+        'dhcp_command': dhcp_cmd
     }
 
 def enter_interactive_usermanager():
@@ -80,22 +98,38 @@ def enter_interactive_usermanager():
     else: 
         return users_info[choice - 1]
 
+def start_yah3c(login_info):
+    yah3c = eapauth.EAPAuth(login_info)
+    yah3c.serve_forever()
+
 def main():
-    # TODO: combine cli args with config
     args = parse_arguments()
+    args = vars(args)
 
     # check for root privilege
     if not (os.getuid() == 0):
         print (u'亲，要加sudo!')
         exit(-1)
 
-    if len(sys.argv) == 1:
-        # enter interactive mode
+    # check if debugging mode enabled
+    if args['debug'] is True:
+        logging.basicConfig(level=logging.DEBUG,
+                format='%(asctime)s %(levelname)s: %(message)s',
+                datefmt='%Y-%m-%d %H:%M:%S')
+        logging.debug('Debugging mode enabled.')
+        logging.debug(args)
+
+    # if no username specified then enter interactive mode
+    if args['username'] is None:
         login_info = enter_interactive_usermanager()
+        logging.debug(login_info)
+        start_yah3c(login_info)
 
-    yah3c = eapauth.EAPAuth(login_info)
-    yah3c.serve_forever()
-
+    # if there is username, then get it's info
+    um = usermgr.UserMgr()
+    login_info = um.get_user_info(args['username'])
+    logging.debug(login_info)
+    start_yah3c(login_info)
 
 if __name__ == "__main__":
     main()
