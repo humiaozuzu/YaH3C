@@ -44,23 +44,37 @@ sudo yah3c
 
 ### 联网
 
-因为YaH3C仅仅是**认证**客户端，所以通过认证后你需要自己联网，一般学校都是使用的dhcp协议获取ip。
+因为YaH3C仅仅是**认证**客户端，所以通过认证后你需要自己联网，不过为了方便还是添加了dhcp支持。
 
-你可以通过你自己喜欢的方式获取ip，命令行的或者是NetworkManager/Wicd：
+如果没有指定dhcp的命令，你可以在认证成功后使用自己喜欢的网络管理工具获取IP，如NetworkManager/Wicd。
+
+yah3c支持基本的命令行参数，执行`yah3c -h`可以看到支持的命令行参数
 
 ``` bash
-# 以dhcpcd为例
-sudo dhcpcd eth0
+$ yah3c -h       
+usage: yah3c [-h] [-u USERNAME] [-debug]
+
+Yet Another H3C Authentication Client
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -u USERNAME, --username USERNAME
+                        Login in with this username
+  -debug                Enable debugging mode
 ```
 
-配置文件
---------
+如执行`sudo yah3c -u Maple`可以自动认证`Maple`这个帐号
+
+配置文件格式
+---------
 用户的登陆信息按照如下的格式保存在文件`/etc/yah3c.conf`中：
 
 ``` ini
 [account]                  # 你的帐户 
 password = 123456          # 密码
 ethernet_interface = eth0  # 使用的网卡
+dhcp_command =             # 验证成功后使用的dhcp命令
+daemon = True              # 验证成功后是否变成daemon进程
 ```
 
 ScreenShots
@@ -77,7 +91,6 @@ ScreenShots
 
 Todo
 ----
-* Command line argument support
 * BSD BPF support
 
 Thanks
