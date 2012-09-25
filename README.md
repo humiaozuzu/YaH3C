@@ -73,7 +73,7 @@ optional arguments:
 [account]                  # 你的帐户 
 password = 123456          # 密码
 ethernet_interface = eth0  # 使用的网卡
-dhcp_command =             # 验证成功后使用的dhcp命令
+dhcp_command = dhcpcd      # 验证成功后使用的dhcp命令(dhcpcd/dhclient)
 daemon = True              # 验证成功后是否变成daemon进程
 ```
 
