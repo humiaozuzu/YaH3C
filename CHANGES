@@ -1,0 +1,42 @@
+YaH3C Changelog
+==============
+
+Here is the full list of changes between each YaH3C release.
+
+Version 0.5
+-----------
+
+Released on September 24th 2012
+
+* add command line argument support
+* add dhcp support
+* refactory usermgr module
+
+Version 0.4
+-----------
+
+Released on September 20th 2012
+
+* remove plugin module
+
+Version 0.3
+-----------
+
+Released on April 1th 2012
+
+* add eap-md5 support
+
+Version 0.2
+-----------
+
+Released on December 29th 2011
+
+* complete refactory 
+* plugins support
+
+Version 0.1
+-----------
+
+Released on November 14th 2011
+
+* Initial commit

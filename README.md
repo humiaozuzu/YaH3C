@@ -1,16 +1,18 @@
 YaH3C
 =====
+
 YaH3C 是用于校园网认证的客户端，支持中山大学东校区.
 
 依赖
 ------------
-* Linux
-* Python2 (Python3暂不支持)
+ 
+* 主流Linux发行版，包括OpenWrt/DD-WRT
+* Python2
 
 安装
 ------------
 
-首先从github上下载，可以直接利用`git clone`，也可以下载压缩包自己解压然后安装。下面以git为例，如果没有则需要先安装：
+首先，从github上下载，可以直接利用`git clone`，也可以下载压缩包自己解压然后安装。下面以git为例，如果没有则需要先安装：
 
 ```bash
 # Ubuntu/Debian
@@ -19,7 +21,7 @@ sudo apt-get install git
 # ArchLinux
 sudo pacman -S git
 ```
-然后从项目中clone下来并安装
+然后，从项目中clone下来并安装
 
 ```bash
 git clone git://github.com/humiaozuzu/YaH3C.git
@@ -32,6 +34,8 @@ sudo python setup.py install
 使用
 ----
 
+完整的联网过程有2步，首先使用本客户端通过交换机的认证，然后获取ip。
+
 ### 认证
 
 程序运行时必须要有root权限：
@@ -40,15 +44,15 @@ sudo python setup.py install
 sudo yah3c
 ```
 
-然后根据程序的提示输入账号密码就可以开始认证了。
+根据程序的提示输入账号密码就可以开始认证了，有些选项如果看不懂请直接按`Enter`。
 
-### 联网
+### 获取ip
 
-因为YaH3C仅仅是**认证**客户端，所以通过认证后你需要自己联网，不过为了方便还是添加了dhcp支持。
+因为YaH3C仅仅是**认证**客户端，所以通过认证后你需要自己获取ip联网，不过为了方便还是添加了dhcp支持。
 
-如果没有指定dhcp的命令，你可以在认证成功后使用自己喜欢的网络管理工具获取IP，如NetworkManager/Wicd。
+如果没有指定dhcp的命令，你可以在认证成功后使用自己喜欢的网络管理工具获取IP，如NetworkManager或Wicd。
 
-yah3c支持基本的命令行参数，执行`yah3c -h`可以看到支持的命令行参数
+YaH3C支持基本的命令行参数，执行`yah3c -h`可以看到支持的命令行参数
 
 ``` bash
 $ yah3c -h       
@@ -72,9 +76,9 @@ optional arguments:
 ``` ini
 [account]                  # 你的帐户 
 password = 123456          # 密码
-ethernet_interface = eth0  # 使用的网卡
-dhcp_command =             # 验证成功后使用的dhcp命令
-daemon = True              # 验证成功后是否变成daemon进程
+ethernet_interface = eth0  # 使用的网卡，默认为eth0
+dhcp_command =             # 验证成功后使用的dhcp命令，默认为空
+daemon = True              # 验证成功后是否变成daemon进程，默认为是
 ```
 
 ScreenShots
@@ -82,19 +86,19 @@ ScreenShots
 
 认证成功:
 
-![success](https://github.com/humiaozuzu/YaH3C/blob/master/screenshots/success.png?raw=true)
+![success](https://raw.github.com/humiaozuzu/YaH3C/master/screenshots/success.png)
 
 认证失败:
 
-![failure](https://github.com/humiaozuzu/YaH3C/raw/master/screenshots/failure.png)
+![failure](https://raw.github.com/humiaozuzu/YaH3C/master/screenshots/failure.png)
 
 
 Todo
 ----
-* BSD BPF support
+* 添加BSD BPF 支持，这样在OS X也可以使用了
 
 Thanks
 ------
-* [qiao](https://github.com/qiao) - Write python installation script for YaH3C.
-* [houqp](https://github.com/houqp) - Refered to houqp's [pyh3c](https://github.com/houqp/pyh3c).
-* [tigersoldier](https://github.com/tigersoldier) - Write EAP-Md5 for YaH3C.
+* [qiao](https://github.com/qiao) - Write python installation script for YaH3C
+* [houqp](https://github.com/houqp) - Refered to houqp's [pyh3c](https://github.com/houqp/pyh3c)
+* [tigersoldier](https://github.com/tigersoldier) - Write EAP-Md5 for YaH3C
