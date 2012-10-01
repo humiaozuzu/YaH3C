@@ -11,7 +11,7 @@ setup(name='yah3c',
       author_email='maplevalley8@gmail.com',
       url='https://github.com/humiaozuzu/YaH3C',
       download_url='https://github.com/humiaozuzu/YaH3C',
-      license='GPL',
+      license='MIT',
       packages=['yah3c', 'yah3c/colorama'],
       scripts=['scripts/yah3c'],
       )
