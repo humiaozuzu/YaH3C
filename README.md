@@ -6,10 +6,10 @@ YaH3C 是用于校园网认证的客户端，支持中山大学东校区.
 为什么不用iNode
 ---------------
 
-* 这么垃圾的产品用i开头完全是对Apple的侮辱
+* i开头完全是对Apple的侮辱嘛 = =
 * 强制添加启动项
 * gui和cli使用的udp交互，很多时候Linux/Mac下掉线完全是因为实现的效率太低
-* 安装脚本居然是自删除的（一次性病毒）
+* 安装脚本居然是自删除的
 * 默认强制记录日志文件，增加CPU负载，减少硬盘寿命，一段时间后就过GB了（是否有敏感信息不得而知了）
 * Linux下仅仅支持Ubuntu 32位系统
 * Mac下安装后居然要重启
@@ -108,9 +108,15 @@ ScreenShots
 Todo
 ----
 * 添加BSD BPF 支持，这样在OS X也可以使用了
+* 完善收集调试信息的功能，方便用户提交认证信息
+* 完善对H3C协议的支持
 
 Thanks
 ------
 * [qiao](https://github.com/qiao) - Write python installation script for YaH3C
 * [houqp](https://github.com/houqp) - Refered to houqp's [pyh3c](https://github.com/houqp/pyh3c)
 * [tigersoldier](https://github.com/tigersoldier) - Write EAP-Md5 for YaH3C
+
+License
+-------
+YaH3c的代码使用MIT License发布，此外，禁止使用YaH3C以及YaH3C的修改程序用于商业目的（比如交叉编译到路由进行销售等行为）
