@@ -1,7 +1,7 @@
 """ EAP authentication handler
 
 This module sents EAPOL begin/logoff packet
-and parses received EAP packet 
+and parses received EAP packet
 
 """
 
@@ -11,25 +11,25 @@ import socket
 import os, sys, pwd
 from subprocess import call
 
-from colorama import Fore, Style, init
+from .colorama import Fore, Style, init
 # init() # required in Windows
-from eappacket import *
+from .eappacket import *
 
 def display_prompt(color, string):
     prompt = color + Style.BRIGHT + '==> ' + Style.RESET_ALL
     prompt += Style.BRIGHT + string + Style.RESET_ALL
-    print prompt
+    print(prompt)
 
 def display_packet(packet):
     # print ethernet_header infomation
-    print 'Ethernet Header Info: '
-    print '\tFrom: ' + repr(packet[0:6])
-    print '\tTo: ' + repr(packet[6:12])
-    print '\tType: ' + repr(packet[12:14])
+    print('Ethernet Header Info: ')
+    print('\tFrom: ' + repr(packet[0:6]))
+    print('\tTo: ' + repr(packet[6:12]))
+    print('\tType: ' + repr(packet[12:14]))
 
 class EAPAuth:
     def __init__(self, login_info):
-        # bind the h3c client to the EAP protocal 
+        # bind the h3c client to the EAP protocal
         self.client = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(ETHERTYPE_PAE))
         self.client.bind((login_info['ethernet_interface'], ETHERTYPE_PAE))
         # get local ethernet card address
@@ -55,7 +55,7 @@ class EAPAuth:
         display_prompt(Fore.GREEN, 'Sending EAPOL logoff')
 
     def send_response_id(self, packet_id):
-        self.client.send(self.ethernet_header + 
+        self.client.send(self.ethernet_header +
                 get_EAPOL(EAPOL_EAPPACKET,
                     get_EAP(EAP_RESPONSE,
                         packet_id,
@@ -67,14 +67,14 @@ class EAPAuth:
         if len(md5) < 16:
             md5 = md5 + '\x00' * (16 - len (md5))
         chap = []
-        for i in xrange(0, 16):
-            chap.append(chr(ord(md5[i]) ^ ord(md5data[i])))
+        for i in range(0, 16):
+            chap.append(chr(ord(md5[i]) ^ md5data[i]))
         resp = chr(len(chap)) + ''.join(chap) + self.login_info['username']
         eap_packet = self.ethernet_header + get_EAPOL(EAPOL_EAPPACKET, get_EAP(EAP_RESPONSE, packet_id, EAP_TYPE_MD5, resp))
         try:
             self.client.send(eap_packet)
-        except socket.error, msg:
-            print "Connection error!"
+        except socket.error as msg:
+            print("Connection error!")
             exit(-1)
 
     def send_response_h3c(self, packet_id):
@@ -82,20 +82,20 @@ class EAPAuth:
         eap_packet = self.ethernet_header + get_EAPOL(EAPOL_EAPPACKET, get_EAP(EAP_RESPONSE, packet_id, EAP_TYPE_H3C, resp))
         try:
             self.client.send(eap_packet)
-        except socket.error, msg:
-            print "Connection error!"
+        except socket.error as msg:
+            print("Connection error!")
             exit(-1)
 
     def display_login_message(self, msg):
         """
             display the messages received form the radius server,
-            including the error meaasge after logging failed or 
+            including the error meaasge after logging failed or
             other meaasge from networking centre
         """
         try:
-            print msg.decode('gbk')
+            print(msg.decode('gbk'))
         except UnicodeDecodeError:
-            print msg
+            print(msg)
 
     def EAP_handler(self, eap_packet):
         vers, type, eapol_len  = unpack("!BBH",eap_packet[:4])
@@ -106,14 +106,14 @@ class EAPAuth:
         code, id, eap_len = unpack("!BBH", eap_packet[4:8])
         if code == EAP_SUCCESS:
             display_prompt(Fore.YELLOW, 'Got EAP Success')
-            
+
             if self.login_info['dhcp_command']:
                 display_prompt(Fore.YELLOW, 'Obtaining IP Address:')
                 call([self.login_info['dhcp_command'], self.login_info['ethernet_interface']])
 
             if self.login_info['daemon'] == 'True':
                 daemonize('/dev/null','/tmp/daemon.log','/tmp/daemon.log')
-        
+
         elif code == EAP_FAILURE:
             if (self.has_sent_logoff):
                 display_prompt(Fore.YELLOW, 'Logoff Successfully!')
@@ -159,10 +159,10 @@ class EAPAuth:
                 # strip the ethernet_header and handle
                 self.EAP_handler(eap_packet[14:])
         except KeyboardInterrupt:
-            print Fore.RED + Style.BRIGHT + 'Interrupted by user' + Style.RESET_ALL
+            print(Fore.RED + Style.BRIGHT + 'Interrupted by user' + Style.RESET_ALL)
             self.send_logoff()
-        except socket.error , msg:
-            print "Connection error: %s" %msg
+        except socket.error as msg:
+            print("Connection error: %s" %msg)
             exit(-1)
 
 def daemonize (stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
@@ -175,34 +175,34 @@ def daemonize (stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
     output may not appear in the order that you expect. '''
 
     # Do first fork.
-    try: 
-        pid = os.fork() 
+    try:
+        pid = os.fork()
         if pid > 0:
             sys.exit(0)   # Exit first parent.
-    except OSError, e: 
+    except OSError as e:
         sys.stderr.write ("fork #1 failed: (%d) %s\n" % (e.errno, e.strerror) )
         sys.exit(1)
 
     # Decouple from parent environment.
-    os.chdir("/") 
-    os.umask(0) 
-    os.setsid() 
+    os.chdir("/")
+    os.umask(0)
+    os.setsid()
 
     # Do second fork.
-    try: 
-        pid = os.fork() 
+    try:
+        pid = os.fork()
         if pid > 0:
             sys.exit(0)   # Exit second parent.
-    except OSError, e: 
+    except OSError as e:
         sys.stderr.write ("fork #2 failed: (%d) %s\n" % (e.errno, e.strerror) )
         sys.exit(1)
 
     # Now I am a daemon!
-    
+
     # Redirect standard file descriptors.
     si = open(stdin, 'r')
     so = open(stdout, 'a+')
-    se = open(stderr, 'a+', 0)
+    se = open(stderr, 'ab+', 0)
     os.dup2(si.fileno(), sys.stdin.fileno())
     os.dup2(so.fileno(), sys.stdout.fileno())
     os.dup2(se.fileno(), sys.stderr.fileno())

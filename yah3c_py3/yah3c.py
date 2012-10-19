@@ -7,13 +7,13 @@
 __version__ = '0.5'
 
 import os, sys
-import ConfigParser
+import configparser
 import getpass
 import argparse
 import logging
 
-import eapauth
-import usermgr
+from . import eapauth
+from . import usermgr
 
 
 def parse_arguments():
@@ -34,26 +34,26 @@ def parse_arguments():
     return args
 
 def prompt_user_info():
-    username = raw_input('Input username: ')
+    username = input('Input username: ')
     while True:
         password = getpass.getpass('Input password: ')
         password_again = getpass.getpass('Input again: ')
         if password == password_again:
             break
         else:
-            print 'Password do not match!'
+            print('Password do not match!')
 
-    dev = raw_input('Decice(eth0 by default): ')
+    dev = input('Decice(eth0 by default): ')
     if not dev:
         dev = 'eth0'
 
-    choice = raw_input('Forked to background after authentication(Yes by default)\n<Y/N>: ')
+    choice = input('Forked to background after authentication(Yes by default)\n<Y/N>: ')
     if choice == 'n' or choice == 'N':
-        daemon = False
+        daemon = "False"
     else:
-        daemon = True
+        daemon = "True"
 
-    dhcp_cmd = raw_input('Dhcp command(Press Enter to pass): ')
+    dhcp_cmd = input('Dhcp command(Press Enter to pass): ')
     if not dhcp_cmd:
         dhcp_cmd = ''
     return {
@@ -68,35 +68,36 @@ def enter_interactive_usermanager():
     um = usermgr.UserMgr()
 
     if um.get_user_number() == 0:
-        choice = raw_input('No user conf file found, creat a new one?\n<Y/N>: ')
-        if choice == 'y' or choice == 'Y': 
+        choice = input('No user conf file found, creat a new one?\n<Y/N>: ')
+        if choice == 'y' or choice == 'Y':
             login_info = prompt_user_info()
             um.add_user(login_info)
-        else: 
+        else:
             exit(-1)
-    
+
     # user has been created or already have users
-    users_info = um.get_all_users_info()
-
-    print '0 - add a new user'
-    for i, user_info in enumerate(users_info):
-        print '%d - %s(%s)' %(i + 1, user_info['username'], user_info['ethernet_interface'])
-
     while True:
+        users_info = um.get_all_users_info()
+
+        print('0 - add a new user')
+        for i, user_info in enumerate(users_info):
+            print('%d - %s(%s)' %(i + 1, user_info['username'], user_info['ethernet_interface']))
+
         try:
-            choice = int(raw_input('Your choice: '))
+            choice = int(input('Your choice: '))
         except ValueError:
-            print 'Please input a valid number!'
-        else: break;
-    if choice == 0:
-        try:
-            user_info = prompt_user_info()
-            um.add_user(user_info)
-        except ConfigParser.DuplicateSectionError:
-            print 'User already exist!'
-            exit(-1)
-    else: 
-        return users_info[choice - 1]
+            print('Please input a valid number!')
+            continue
+
+        if choice == 0:
+            try:
+                user_info = prompt_user_info()
+                um.add_user(user_info)
+            except configparser.DuplicateSectionError:
+                print('User already exist!')
+                exit(-1)
+        else:
+            return users_info[choice - 1]
 
 def start_yah3c(login_info):
     yah3c = eapauth.EAPAuth(login_info)
@@ -108,7 +109,7 @@ def main():
 
     # check for root privilege
     if not (os.getuid() == 0):
-        print (u'亲，要加sudo!')
+        print ('亲，要加sudo!')
         exit(-1)
 
     # check if debugging mode enabled

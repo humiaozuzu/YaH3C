@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+
+if __name__ == '__main__':
+    import yah3c_py3.yah3c
+    yah3c_py3.yah3c.main()

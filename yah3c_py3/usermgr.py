@@ -5,7 +5,7 @@ This module reads the 'users.conf' file and gets all users's info.
 
 __all__ = ["UserMgr"]
 
-import ConfigParser
+import configparser
 
 class UserMgr:
     """User Manager
@@ -15,10 +15,10 @@ class UserMgr:
         "password": "valley",
         "ethernet_interface": "eth0",
         "dhcp_command": "dhcpcd",
-        "daemon": True,
+        "daemon": "True",
         # following has not implemented yet
-        "carry_version_info": True,
-        "broadcast_logoff": False
+        "carry_version_info": "True",
+        "broadcast_logoff": "False",
         "packet_type": "unicast"
     }
     """
@@ -27,7 +27,7 @@ class UserMgr:
             self.users_cfg_path = '/etc/yah3c.conf'
         else:
             self.users_cfg_path = path
-        self.config = ConfigParser.ConfigParser()
+        self.config = configparser.ConfigParser()
         self.config.read(self.users_cfg_path)
 
     def save_and_reload(self):
@@ -35,7 +35,7 @@ class UserMgr:
         self.config.write(fp)
         fp.close()
         self.config.read(self.users_cfg_path)
-       
+
     def get_user_number(self):
         return len(self.config.sections())
 
@@ -52,7 +52,7 @@ class UserMgr:
         user_info = dict(self.config.items(username))
         user_info['username'] = username
         return user_info
-    
+
     def add_user(self, user_info):
         self.config.add_section(user_info['username'])
         self.update_user_info(user_info)

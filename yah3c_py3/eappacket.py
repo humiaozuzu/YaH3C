@@ -3,8 +3,8 @@ from struct import *
 ## Constants
 # Reference: http://tools.ietf.org/html/rfc3748
 ETHERTYPE_PAE = 0x888e
-PAE_GROUP_ADDR = "\x01\x80\xc2\x00\x00\x03"
-BROADCAST_ADDR = "\xff\xff\xff\xff\xff\xff"
+PAE_GROUP_ADDR = b"\x01\x80\xc2\x00\x00\x03"
+BROADCAST_ADDR = b"\xff\xff\xff\xff\xff\xff"
 
 EAPOL_VERSION = 1
 EAPOL_EAPPACKET = 0
@@ -34,14 +34,14 @@ EAP_TYPE_MD5 = 4               # md5 Challenge
 EAP_TYPE_H3C = 7               # H3C eap packet(used for SYSU east campus)
 
 ### Packet builders
-def get_EAPOL(type, payload=""):
+def get_EAPOL(type, payload=b""):
     return pack("!BBH", EAPOL_VERSION, type, len(payload))+payload
 
 def get_EAP(code, id, type=0, data=""):
     if code in [EAP_SUCCESS, EAP_FAILURE]:
         return pack("!BBH", code, id, 4)
     else:
-        return pack("!BBHB", code, id, 5+len(data), type)+data
+        return pack("!BBHB", code, id, 5+len(data), type)+data.encode()
 
 def get_ethernet_header(src, dst, type):
     return dst+src+pack("!H",type)
