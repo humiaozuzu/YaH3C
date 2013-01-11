@@ -1,5 +1,4 @@
 #!/usr/bin/env python
 
-if __name__ == '__main__':
-    import yah3c.yah3c
-    yah3c.yah3c.main()
+from yah3c.yah3c import main
+main()
