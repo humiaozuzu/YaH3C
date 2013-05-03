@@ -120,3 +120,8 @@ Thanks
 License
 -------
 YaH3c的代码使用MIT License发布，此外，禁止使用YaH3C以及YaH3C的修改程序用于商业目的（比如交叉编译到路由进行销售等行为）
+
+Donate
+------
+
+ <a href='http://me.alipay.com/humiaozuzu'> <img src='https://img.alipay.com/sys/personalprod/style/mc/btn-index.png' /> </a>
