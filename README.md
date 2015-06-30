@@ -1,7 +1,9 @@
 YaH3C
 =====
 
-YaH3C 是用于校园网认证的客户端，支持中山大学东校区.
+YaH3C 是用于校园网认证的客户端，支持中山大学东校区。
+
+感谢 [lpy](https://github.com/lpy) 为 OS X 提供的[版本](https://github.com/lpy/Yah3c)。
 
 为什么不用iNode
 ---------------
@@ -107,7 +109,7 @@ ScreenShots
 
 Todo
 ----
-* 添加BSD BPF 支持，这样在OS X也可以使用了
+* ~~添加BSD BPF 支持，这样在OS X也可以使用了~~
 * 完善收集调试信息的功能，方便用户提交认证信息
 * 完善对H3C协议的支持
 
@@ -119,9 +121,4 @@ Thanks
 
 License
 -------
-YaH3c的代码使用MIT License发布，此外，禁止使用YaH3C以及YaH3C的修改程序用于商业目的（比如交叉编译到路由进行销售等行为）
-
-Donate
-------
-
- <a href='http://me.alipay.com/humiaozuzu'> <img src='https://img.alipay.com/sys/personalprod/style/mc/btn-index.png' /> </a>
+YaH3C的代码使用MIT License发布，此外，禁止使用YaH3C以及YaH3C的修改程序用于商业目的（比如交叉编译到路由进行销售等行为）
